@@ -2,8 +2,9 @@ plugins {
     id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
 
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.jpa")
     kotlin("plugin.serialization")
 
     application
@@ -20,10 +21,15 @@ dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
     // serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+
+    // kotlin-reflect
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     // exposed
     val exposedVersion: String by project
@@ -31,6 +37,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
+    // h2
     runtimeOnly("com.h2database:h2")
     testRuntimeOnly("com.h2database:h2")
 
