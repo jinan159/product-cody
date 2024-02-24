@@ -11,6 +11,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "product-recommand"
+rootProject.name = "product-search"
 
 
