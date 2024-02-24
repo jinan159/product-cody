@@ -1,6 +1,6 @@
 package com.musinsa.recommand.domain
 
 class Category(
-    val id: String,
+    val id: String? = null,
     val name: String
 )

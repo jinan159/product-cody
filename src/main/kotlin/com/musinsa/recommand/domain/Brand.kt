@@ -1,6 +1,6 @@
 package com.musinsa.recommand.domain
 
 class Brand(
-    id: Long,
+    id: Long? = null,
     val name: String
 )
