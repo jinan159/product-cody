@@ -1,5 +1,7 @@
 package com.musinsa.product.search.adapter.admin.out.persistence.repository
 
+import com.musinsa.product.search.adapter.admin.out.persistence.entity.ProductEntity
+import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
 import org.springframework.stereotype.Repository
@@ -7,8 +9,8 @@ import kotlin.jvm.optionals.getOrNull
 
 @Repository
 class ProductDomainRepository(
-    private val productJpaRepository: com.musinsa.product.search.adapter.admin.out.persistence.repository.ProductJpaRepository
-) : com.musinsa.product.search.application.admin.port.out.ProductRepository {
+    private val productJpaRepository: ProductJpaRepository
+) : ProductRepository {
     override fun save(product: Product): Product {
         return productJpaRepository.save(product.toEntity())
             .toDomain()
@@ -28,9 +30,9 @@ class ProductDomainRepository(
         return productJpaRepository.existsById(id)
     }
 
-    private fun Product.toEntity(): com.musinsa.product.search.adapter.admin.out.persistence.entity.ProductEntity {
+    private fun Product.toEntity(): ProductEntity {
         return with(this) {
-            com.musinsa.product.search.adapter.admin.out.persistence.entity.ProductEntity(
+            ProductEntity(
                 id = id,
                 categoryId = categoryId,
                 brandId = brandId,
@@ -41,7 +43,7 @@ class ProductDomainRepository(
         }
     }
 
-    private fun com.musinsa.product.search.adapter.admin.out.persistence.entity.ProductEntity.toDomain(): Product {
+    private fun ProductEntity.toDomain(): Product {
         return with(this) {
             Product(
                 id = id,

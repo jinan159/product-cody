@@ -7,9 +7,9 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 class BrandCreateServiceTest(
-    private val brandRepository: com.musinsa.product.search.application.admin.port.out.BrandRepository
+    private val brandRepository: BrandRepository
 ) : ServiceShouldSpec({
-    val service = com.musinsa.product.search.application.admin.service.BrandCreateService(
+    val service = BrandCreateService(
         brandRepository = brandRepository
     )
 

@@ -1,5 +1,7 @@
 package com.musinsa.product.search.application.admin.service
 
+import com.musinsa.product.search.application.admin.port.out.ProductRepository
+import com.musinsa.product.search.application.exception.ProductNotFoundException
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
 import com.musinsa.product.search.testsupport.ServiceShouldSpec
@@ -9,9 +11,9 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import java.util.Currency
 
 class ProductDeleteServiceTest(
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository
+    private val productRepository: ProductRepository
 ) : ServiceShouldSpec({
-    val service = com.musinsa.product.search.application.admin.service.ProductDeleteService(
+    val service = ProductDeleteService(
         productRepository = productRepository
     )
 
@@ -47,6 +49,6 @@ class ProductDeleteServiceTest(
         }
 
         // then
-        exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.ProductNotFoundException>()
+        exception.shouldBeTypeOf<ProductNotFoundException>()
     }
 })

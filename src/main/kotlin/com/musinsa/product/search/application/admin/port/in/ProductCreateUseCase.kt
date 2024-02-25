@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.util.Currency
 
 interface ProductCreateUseCase {
-    fun create(request: com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.CreateRequest): com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.Response
+    fun create(request: CreateRequest): Response
 
     data class CreateRequest(
         val brandId: Long,

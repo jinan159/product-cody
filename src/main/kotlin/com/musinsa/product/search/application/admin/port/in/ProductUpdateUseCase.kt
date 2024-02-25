@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.util.Currency
 
 interface ProductUpdateUseCase {
-    fun update(request: com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase.UpdateRequest)
+    fun update(request: UpdateRequest)
 
     data class UpdateRequest(
         val id: Long,

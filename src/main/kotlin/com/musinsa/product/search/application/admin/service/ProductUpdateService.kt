@@ -15,15 +15,15 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ProductUpdateService(
-    private val brandRepository: com.musinsa.product.search.application.admin.port.out.BrandRepository,
-    private val categoryRepository: com.musinsa.product.search.application.admin.port.out.CategoryRepository,
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository
-) : com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase {
+    private val brandRepository: BrandRepository,
+    private val categoryRepository: CategoryRepository,
+    private val productRepository: ProductRepository
+) : ProductUpdateUseCase {
     override fun update(request: UpdateRequest) {
         request.validate()
 
         val product = productRepository.findById(request.id)
-            ?: throw com.musinsa.product.search.application.exception.ProductNotFoundException()
+            ?: throw ProductNotFoundException()
 
         try {
             with(request) {
@@ -43,7 +43,7 @@ class ProductUpdateService(
     }
 
     private fun UpdateRequest.validate() {
-        if (brandId != null && !brandRepository.existsById(brandId)) throw com.musinsa.product.search.application.exception.BrandNotFoundException()
-        if (categoryId != null && !categoryRepository.existsById(categoryId)) throw com.musinsa.product.search.application.exception.CategoryNotFoundException()
+        if (brandId != null && !brandRepository.existsById(brandId)) throw BrandNotFoundException()
+        if (categoryId != null && !categoryRepository.existsById(categoryId)) throw CategoryNotFoundException()
     }
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ProductDeleteService(
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository
-) : com.musinsa.product.search.application.admin.port.`in`.ProductDeleteUseCase {
+    private val productRepository: ProductRepository
+) : ProductDeleteUseCase {
     override fun delete(id: Long) {
         val product = productRepository.findById(id)
-            ?: throw com.musinsa.product.search.application.exception.ProductNotFoundException()
+            ?: throw ProductNotFoundException()
 
         productRepository.delete(product)
     }

@@ -29,7 +29,7 @@ class ProductEntity(
     var name: String,
 
     @Column(length = 255)
-    @Convert(converter = com.musinsa.product.search.adapter.admin.out.persistence.entity.CurrencyConverter::class)
+    @Convert(converter = CurrencyConverter::class)
     var currency: Currency,
 
     @Column(precision = 10, scale = 2)

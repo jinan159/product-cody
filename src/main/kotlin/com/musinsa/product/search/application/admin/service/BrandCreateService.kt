@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class BrandCreateService(
-    private val brandRepository: com.musinsa.product.search.application.admin.port.out.BrandRepository
-) : com.musinsa.product.search.application.admin.port.`in`.BrandCreateUseCase {
+    private val brandRepository: BrandRepository
+) : BrandCreateUseCase {
     override fun create(request: CreateRequest): Response {
         val savedBrand = brandRepository.save(
-            com.musinsa.product.search.domain.Brand(name = request.name)
+            Brand(name = request.name)
         )
 
         return Response(

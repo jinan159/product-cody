@@ -1,8 +1,14 @@
 package com.musinsa.product.search.application.admin.service
 
+import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase
 import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.CreateRequest
 import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.ProductCreateFailedException
 import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.Response
+import com.musinsa.product.search.application.admin.port.out.BrandRepository
+import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductRepository
+import com.musinsa.product.search.application.exception.BrandNotFoundException
+import com.musinsa.product.search.application.exception.CategoryNotFoundException
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
 import jakarta.transaction.Transactional
@@ -11,10 +17,10 @@ import org.springframework.stereotype.Service
 @Service
 @Transactional
 class ProductCreateService(
-    private val brandRepository: com.musinsa.product.search.application.admin.port.out.BrandRepository,
-    private val categoryRepository: com.musinsa.product.search.application.admin.port.out.CategoryRepository,
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository
-) : com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase {
+    private val brandRepository: BrandRepository,
+    private val categoryRepository: CategoryRepository,
+    private val productRepository: ProductRepository
+) : ProductCreateUseCase {
     override fun create(request: CreateRequest): Response {
         request.validate()
 
@@ -42,7 +48,7 @@ class ProductCreateService(
     }
 
     private fun CreateRequest.validate() {
-        if (!brandRepository.existsById(brandId)) throw com.musinsa.product.search.application.exception.BrandNotFoundException()
-        if (!categoryRepository.existsById(categoryId)) throw com.musinsa.product.search.application.exception.CategoryNotFoundException()
+        if (!brandRepository.existsById(brandId)) throw BrandNotFoundException()
+        if (!categoryRepository.existsById(categoryId)) throw CategoryNotFoundException()
     }
 }

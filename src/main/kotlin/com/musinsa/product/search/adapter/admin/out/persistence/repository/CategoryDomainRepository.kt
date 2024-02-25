@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class CategoryDomainRepository(
-    private val categoryJpaRepository: com.musinsa.product.search.adapter.admin.out.persistence.repository.CategoryJpaRepository
-) : com.musinsa.product.search.application.admin.port.out.CategoryRepository {
+    private val categoryJpaRepository: CategoryJpaRepository
+) : CategoryRepository {
     override fun existsById(id: Long): Boolean {
         return categoryJpaRepository.existsById(id)
     }

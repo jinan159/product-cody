@@ -1,6 +1,8 @@
 plugins {
     id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
+    id("com.epages.restdocs-api-spec") version "0.18.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
 
     kotlin("jvm")
     kotlin("plugin.spring")
@@ -10,7 +12,7 @@ plugins {
     application
 }
 
-group = "com.musinsa.recommand"
+group = "com.musinsa.product.search"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -21,8 +23,14 @@ dependencies {
     // spring
     implementation("org.springframework.boot:spring-boot-starter-web")
 
-    // jpa
+    // orm - jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // orm - exposed
+    val exposedVersion: String by project
+    implementation("org.jetbrains.exposed:exposed-spring-boot-starter:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
     // serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
@@ -30,12 +38,6 @@ dependencies {
 
     // kotlin-reflect
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-    // exposed
-    val exposedVersion: String by project
-    implementation("org.jetbrains.exposed:exposed-spring-boot-starter:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
     // h2
     runtimeOnly("com.h2database:h2")
@@ -82,6 +84,14 @@ tasks.jar {
     enabled = false
 }
 
+openapi3 {
+    title = "Musinsa product search API"
+    description = "Musinsa product search API"
+    version = "${project.version}"
+    format = "yaml"
+    setServer("http://localhost:8080")
+}
+
 application {
-    mainClass.set("com.musinsa.recommand.ApplicationKt")
+    mainClass.set("com.musinsa.product.search.ApplicationKt")
 }

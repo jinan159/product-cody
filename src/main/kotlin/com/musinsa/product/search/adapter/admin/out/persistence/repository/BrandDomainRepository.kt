@@ -8,9 +8,9 @@ import kotlin.jvm.optionals.getOrNull
 
 @Repository
 class BrandDomainRepository(
-    private val brandJpaRepository: com.musinsa.product.search.adapter.admin.out.persistence.repository.BrandJpaRepository
-) : com.musinsa.product.search.application.admin.port.out.BrandRepository {
-    override fun save(brand: com.musinsa.product.search.domain.Brand): com.musinsa.product.search.domain.Brand {
+    private val brandJpaRepository: BrandJpaRepository
+) : BrandRepository {
+    override fun save(brand: Brand): Brand {
         return brandJpaRepository.save(brand.toEntity())
             .toDomain()
     }
@@ -19,24 +19,24 @@ class BrandDomainRepository(
         return brandJpaRepository.existsById(id)
     }
 
-    override fun findById(id: Long): com.musinsa.product.search.domain.Brand? {
+    override fun findById(id: Long): Brand? {
         return brandJpaRepository.findById(id)
             .getOrNull()
             ?.toDomain()
     }
 
-    private fun com.musinsa.product.search.domain.Brand.toEntity(): com.musinsa.product.search.adapter.admin.out.persistence.entity.BrandEntity {
+    private fun Brand.toEntity(): BrandEntity {
         return with(this) {
-            com.musinsa.product.search.adapter.admin.out.persistence.entity.BrandEntity(
+            BrandEntity(
                 id = id,
                 name = name
             )
         }
     }
 
-    private fun com.musinsa.product.search.adapter.admin.out.persistence.entity.BrandEntity.toDomain(): com.musinsa.product.search.domain.Brand {
+    private fun BrandEntity.toDomain(): Brand {
         return with(this) {
-            com.musinsa.product.search.domain.Brand(
+            Brand(
                 id = id,
                 name = name
             )

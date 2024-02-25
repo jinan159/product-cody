@@ -2,6 +2,12 @@ package com.musinsa.product.search.application.admin.service
 
 import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase.ProductUpdateFailedException
 import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase.UpdateRequest
+import com.musinsa.product.search.application.admin.port.out.BrandRepository
+import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductRepository
+import com.musinsa.product.search.application.exception.BrandNotFoundException
+import com.musinsa.product.search.application.exception.CategoryNotFoundException
+import com.musinsa.product.search.application.exception.ProductNotFoundException
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
 import com.musinsa.product.search.testsupport.ServiceShouldSpec
@@ -16,11 +22,11 @@ import java.math.BigDecimal
 import java.util.Currency
 
 class ProductUpdateServiceTest(
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository
+    private val productRepository: ProductRepository
 ) : ServiceShouldSpec({
-    val brandRepository = mockk<com.musinsa.product.search.application.admin.port.out.BrandRepository>()
-    val categoryRepository = mockk<com.musinsa.product.search.application.admin.port.out.CategoryRepository>()
-    val service = com.musinsa.product.search.application.admin.service.ProductUpdateService(
+    val brandRepository = mockk<BrandRepository>()
+    val categoryRepository = mockk<CategoryRepository>()
+    val service = ProductUpdateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
         productRepository = productRepository
@@ -65,11 +71,11 @@ class ProductUpdateServiceTest(
 
         // when
         service.update(updateRequest)
-        val productAfterUpdate = productRepository.findById(product.id!!)
+        val productAfterUpdate = productRepository.findById(savedProduct.id!!)
 
         // then
         productAfterUpdate.shouldNotBeNull()
-        productAfterUpdate.id shouldBe product.id
+        productAfterUpdate.id shouldBe savedProduct.id
         with(updateRequest) {
             productAfterUpdate.brandId shouldBe brandId
             productAfterUpdate.categoryId shouldBe categoryId
@@ -92,7 +98,7 @@ class ProductUpdateServiceTest(
             }
 
             // then
-            exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.BrandNotFoundException>()
+            exception.shouldBeTypeOf<BrandNotFoundException>()
         }
 
         should("카테고리가 존재하지 않으면 예외가 발생한다") {
@@ -107,7 +113,7 @@ class ProductUpdateServiceTest(
             }
 
             // then
-            exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.CategoryNotFoundException>()
+            exception.shouldBeTypeOf<CategoryNotFoundException>()
         }
 
         should("존재하지 않는 상품이면 예외가 발생한다") {
@@ -122,7 +128,7 @@ class ProductUpdateServiceTest(
             }
 
             // then
-            exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.ProductNotFoundException>()
+            exception.shouldBeTypeOf<ProductNotFoundException>()
         }
 
         should("상품 수정에 싪패하면 예외가 발생한다") {

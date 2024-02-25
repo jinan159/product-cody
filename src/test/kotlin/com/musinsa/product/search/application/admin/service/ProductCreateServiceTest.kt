@@ -18,11 +18,11 @@ import io.mockk.mockk
 import java.util.Currency
 
 class ProductCreateServiceTest(
-    private val productRepository: com.musinsa.product.search.application.admin.port.out.ProductRepository,
+    private val productRepository: ProductRepository,
 ) : ServiceShouldSpec({
-    val brandRepository = mockk<com.musinsa.product.search.application.admin.port.out.BrandRepository>()
-    val categoryRepository = mockk<com.musinsa.product.search.application.admin.port.out.CategoryRepository>()
-    val service = com.musinsa.product.search.application.admin.service.ProductCreateService(
+    val brandRepository = mockk<BrandRepository>()
+    val categoryRepository = mockk<CategoryRepository>()
+    val service = ProductCreateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
         productRepository = productRepository
@@ -74,7 +74,7 @@ class ProductCreateServiceTest(
                 service.create(createRequest)
             }
 
-            exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.BrandNotFoundException>()
+            exception.shouldBeTypeOf<BrandNotFoundException>()
         }
 
         should("카테고리 존재하지 않으면 예외가 발생한다") {
@@ -87,7 +87,7 @@ class ProductCreateServiceTest(
                 service.create(createRequest)
             }
 
-            exception.shouldBeTypeOf<com.musinsa.product.search.application.exception.CategoryNotFoundException>()
+            exception.shouldBeTypeOf<CategoryNotFoundException>()
         }
 
         should("상품 도메인 생성을 실패하면 예외가 발생한다") {
