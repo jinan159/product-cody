@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
-import java.util.Currency
 
 @RestController
 @RequestMapping("/v1/admin/products")
@@ -41,7 +40,6 @@ class ProductController(
                     brandId = brandId,
                     categoryId = categoryId,
                     name = name,
-                    currency = currency,
                     amount = amount,
                 )
             }
@@ -59,7 +57,6 @@ class ProductController(
         val brandId: Long?,
         val categoryId: Long?,
         val name: String?,
-        val currency: Currency?,
         val amount: BigDecimal?
     )
 }

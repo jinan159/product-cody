@@ -4,7 +4,6 @@ import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeTypeOf
-import java.util.Currency
 
 class ProductTest : ShouldSpec({
     should("상품 생성에 성공한다") {
@@ -12,7 +11,6 @@ class ProductTest : ShouldSpec({
         val brandId = 1L
         val categoryId = 2L
         val name = "test-product"
-        val currency = Currency.getInstance("KRW")
         val amount = 1000.toBigDecimal()
 
         // when
@@ -21,7 +19,6 @@ class ProductTest : ShouldSpec({
             categoryId = categoryId,
             name = name,
             price = ProductPrice(
-                currency = currency,
                 amount = amount
             )
         )
@@ -30,7 +27,6 @@ class ProductTest : ShouldSpec({
         product.brandId shouldBe brandId
         product.categoryId shouldBe categoryId
         product.name shouldBe name
-        product.price.currency shouldBe currency
         product.price.amount shouldBe amount
     }
 
@@ -40,7 +36,6 @@ class ProductTest : ShouldSpec({
             val brandId = 1L
             val categoryId = 2L
             val name = "test-product"
-            val currency = Currency.getInstance("KRW")
             val amount = (-1000).toBigDecimal()
 
             // when
@@ -50,7 +45,6 @@ class ProductTest : ShouldSpec({
                     categoryId = categoryId,
                     name = name,
                     price = ProductPrice(
-                        currency = currency,
                         amount = amount
                     )
                 )
@@ -69,7 +63,6 @@ class ProductTest : ShouldSpec({
                categoryId = 2L,
                name = "test-product",
                price = ProductPrice(
-                   currency = Currency.getInstance("KRW"),
                    amount = 1000.toBigDecimal()
                )
            )

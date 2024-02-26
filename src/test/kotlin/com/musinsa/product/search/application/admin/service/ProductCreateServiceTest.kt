@@ -15,8 +15,9 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
-import java.util.Currency
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
 class ProductCreateServiceTest(
     private val productRepository: ProductRepository,
 ) : ServiceShouldSpec({
@@ -32,7 +33,6 @@ class ProductCreateServiceTest(
         brandId = 0L,
         categoryId = 1L,
         name = "test-product-name",
-        currency = Currency.getInstance("KRW"),
         amount = 1000.toBigDecimal(),
     )
 
@@ -59,7 +59,6 @@ class ProductCreateServiceTest(
             product.brandId shouldBe brandId
             product.categoryId shouldBe categoryId
             product.name shouldBe name
-            product.price.currency shouldBe currency
             product.price.amount.compareTo(amount) shouldBe 0
         }
     }

@@ -8,8 +8,9 @@ import com.musinsa.product.search.testsupport.ServiceShouldSpec
 import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.types.shouldBeTypeOf
-import java.util.Currency
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
 class ProductDeleteServiceTest(
     private val productRepository: ProductRepository
 ) : ServiceShouldSpec({
@@ -25,7 +26,6 @@ class ProductDeleteServiceTest(
                 categoryId = 1L,
                 name = "test-product-name",
                 price = ProductPrice(
-                    currency = Currency.getInstance("KRW"),
                     amount = 1000.toBigDecimal()
                 )
             )

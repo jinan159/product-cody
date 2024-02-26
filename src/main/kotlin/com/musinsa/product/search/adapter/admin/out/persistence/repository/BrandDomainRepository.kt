@@ -4,40 +4,45 @@ import com.musinsa.product.search.adapter.admin.out.persistence.entity.BrandEnti
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.domain.Brand
 import org.springframework.stereotype.Repository
-import kotlin.jvm.optionals.getOrNull
 
 @Repository
-class BrandDomainRepository(
-    private val brandJpaRepository: BrandJpaRepository
-) : BrandRepository {
+class BrandDomainRepository : BrandRepository {
     override fun save(brand: Brand): Brand {
-        return brandJpaRepository.save(brand.toEntity())
-            .toDomain()
+        if (brand.id == null) {
+            return insert(brand)
+        }
+
+        return BrandEntity.findById(brand.id)
+            ?.update(brand)
+            ?: return insert(brand)
     }
 
     override fun existsById(id: Long): Boolean {
-        return brandJpaRepository.existsById(id)
+        return BrandEntity.findById(id) != null
     }
 
     override fun findById(id: Long): Brand? {
-        return brandJpaRepository.findById(id)
-            .getOrNull()
+        return BrandEntity.findById(id)
             ?.toDomain()
     }
 
-    private fun Brand.toEntity(): BrandEntity {
-        return with(this) {
-            BrandEntity(
-                id = id,
-                name = name
-            )
+    private fun insert(brand: Brand): Brand {
+        return BrandEntity.new {
+            name = brand.name
         }
+            .toDomain()
+    }
+
+    private fun BrandEntity.update(brand: Brand): Brand {
+        this.name = brand.name
+
+        return this.toDomain()
     }
 
     private fun BrandEntity.toDomain(): Brand {
         return with(this) {
             Brand(
-                id = id,
+                id = id.value,
                 name = name
             )
         }

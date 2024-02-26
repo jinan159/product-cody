@@ -5,7 +5,9 @@ import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.testsupport.ServiceShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
 class BrandCreateServiceTest(
     private val brandRepository: BrandRepository
 ) : ServiceShouldSpec({

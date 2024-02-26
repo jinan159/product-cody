@@ -1,19 +1,12 @@
 package com.musinsa.product.search.adapter.admin.out.persistence.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.musinsa.product.search.adapter.out.persistence.table.Brands
+import com.musinsa.product.search.adapter.out.persistence.table.Categories
+import org.jetbrains.exposed.dao.LongEntity
+import org.jetbrains.exposed.dao.LongEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
 
-@Entity
-@Table(name = "categories")
-class CategoryEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
-
-    @Column(length = 255)
-    var name: String
-)
+class CategoryEntity(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<CategoryEntity>(Categories)
+    var name by Categories.name
+}

@@ -1,7 +1,6 @@
 package com.musinsa.product.search.domain
 
 import java.math.BigDecimal
-import java.util.Currency
 
 class Product(
     val id: Long? = null,
@@ -23,15 +22,13 @@ class Product(
         brandId: Long? = null,
         categoryId: Long? = null,
         name: String? = null,
-        currency: Currency? = null,
         amount: BigDecimal? = null
     ) {
         if (brandId != null) this.brandId = brandId
         if (categoryId != null) this.categoryId = categoryId
         if (name != null) this.name = name
-        if (currency != null || amount != null) {
+        if (amount != null) {
             this.price.update(
-                currency = currency,
                 amount = amount
             )
         }
@@ -39,15 +36,11 @@ class Product(
 }
 
 class ProductPrice(
-    currency: Currency = Currency.getInstance("KRW"),
     amount: BigDecimal
 ) {
     init {
         validateAmount(amount)
     }
-
-    var currency: Currency = currency
-        private set
     var amount: BigDecimal = amount
         private set(value) {
             validateAmount(value)
@@ -62,10 +55,8 @@ class ProductPrice(
     }
 
     fun update(
-        currency: Currency?,
-        amount: BigDecimal?
+        amount: BigDecimal
     ) {
-        if (currency != null) this.currency = currency
-        if (amount != null) this.amount = amount
+        this.amount = amount
     }
 }

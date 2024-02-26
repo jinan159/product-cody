@@ -3,8 +3,8 @@ package com.musinsa.product.search.application.admin.service
 import com.musinsa.product.search.application.admin.port.`in`.ProductDeleteUseCase
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.application.exception.ProductNotFoundException
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional

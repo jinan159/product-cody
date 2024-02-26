@@ -5,8 +5,8 @@ import com.musinsa.product.search.application.admin.port.`in`.BrandCreateUseCase
 import com.musinsa.product.search.application.admin.port.`in`.BrandCreateUseCase.Response
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.domain.Brand
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional

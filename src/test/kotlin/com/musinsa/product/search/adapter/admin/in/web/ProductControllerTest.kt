@@ -12,7 +12,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.pos
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put
 import org.springframework.restdocs.request.RequestDocumentation.pathParameters
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.util.Currency
 
 class ProductControllerTest : ControllerShouldSpec(
     service = "상품 검색 어드민",
@@ -38,7 +37,6 @@ class ProductControllerTest : ControllerShouldSpec(
                                 brandId = 1L,
                                 categoryId = 2L,
                                 name = "test-product-name",
-                                currency = Currency.getInstance("KRW"),
                                 amount = 1000.toBigDecimal()
                             )
                         )
@@ -49,7 +47,6 @@ class ProductControllerTest : ControllerShouldSpec(
                         "brandId".number("브랜드 ID")
                         "categoryId".number("카테고리 ID")
                         "name".string("상품명")
-                        "currency".string("통화 코드")
                         "amount".number("가격")
                     }
                 )
@@ -69,7 +66,6 @@ class ProductControllerTest : ControllerShouldSpec(
                                 brandId = 1L,
                                 categoryId = 2L,
                                 name = "test-product-updated-name",
-                                currency = Currency.getInstance("KRW"),
                                 amount = 2000.toBigDecimal()
                             )
                         )
@@ -83,7 +79,6 @@ class ProductControllerTest : ControllerShouldSpec(
                         "brandId".number("브랜드 ID")
                         "categoryId".number("카테고리 ID")
                         "name".string("상품명")
-                        "currency".string("통화 코드")
                         "amount".number("가격")
                     }
                 )

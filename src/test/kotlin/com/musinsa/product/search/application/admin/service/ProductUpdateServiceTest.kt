@@ -18,9 +18,10 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
-import java.util.Currency
 
+@Transactional
 class ProductUpdateServiceTest(
     private val productRepository: ProductRepository
 ) : ServiceShouldSpec({
@@ -37,7 +38,6 @@ class ProductUpdateServiceTest(
         categoryId = 1L,
         name = "test-product-name",
         price = ProductPrice(
-            currency = Currency.getInstance("KRW"),
             amount = 1000.toBigDecimal()
         )
     )
@@ -51,7 +51,6 @@ class ProductUpdateServiceTest(
             brandId = 2L,
             categoryId = 3L,
             name = "test-updated-product-name",
-            currency = Currency.getInstance("USD"),
             amount = amount
         )
 
@@ -80,7 +79,6 @@ class ProductUpdateServiceTest(
             productAfterUpdate.brandId shouldBe brandId
             productAfterUpdate.categoryId shouldBe categoryId
             productAfterUpdate.name shouldBe name
-            productAfterUpdate.price.currency shouldBe currency
             productAfterUpdate.price.amount.compareTo(amount) shouldBe 0
         }
     }

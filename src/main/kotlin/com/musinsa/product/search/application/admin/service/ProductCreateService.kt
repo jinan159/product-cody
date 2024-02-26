@@ -11,8 +11,8 @@ import com.musinsa.product.search.application.exception.BrandNotFoundException
 import com.musinsa.product.search.application.exception.CategoryNotFoundException
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
@@ -31,7 +31,6 @@ class ProductCreateService(
                     categoryId = categoryId,
                     name = name,
                     price = ProductPrice(
-                        currency = currency,
                         amount = amount
                     )
                 )

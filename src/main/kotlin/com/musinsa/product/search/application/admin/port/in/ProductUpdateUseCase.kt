@@ -1,7 +1,6 @@
 package com.musinsa.product.search.application.admin.port.`in`
 
 import java.math.BigDecimal
-import java.util.Currency
 
 interface ProductUpdateUseCase {
     fun update(request: UpdateRequest)
@@ -11,7 +10,6 @@ interface ProductUpdateUseCase {
         val brandId: Long?,
         val categoryId: Long?,
         val name: String?,
-        val currency: Currency?,
         val amount: BigDecimal?
     )
 
