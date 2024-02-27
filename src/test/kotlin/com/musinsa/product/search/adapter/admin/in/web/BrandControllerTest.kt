@@ -19,7 +19,7 @@ class BrandControllerTest : ControllerShouldSpec(
                 every { create(any()) } returns Response(1L)
             }
 
-            BrandController(brandCreateUseCase = brandCreateUseCase)
+            BrandController(brandCreateUseCase)
                 .`when`(
                     post("/v1/admin/brands")
                         .body(
