@@ -1,5 +1,6 @@
 package com.musinsa.product.search.adapter.product.`in`.web
 
+import com.musinsa.product.search.adapter.product.out.cache.LowestPriceCodySelectCache
 import com.musinsa.product.search.application.product.port.`in`.LowestPriceCodySelectUseCase
 import com.musinsa.product.search.application.product.port.`in`.LowestPriceCodySelectUseCase.Response
 import com.musinsa.product.search.testsupport.ControllerShouldSpec
@@ -31,8 +32,15 @@ class LowestPriceCodySelectControllerTest : ControllerShouldSpec(
                     totalPrice = 3000.toBigDecimal()
                 )
             }
+            val cache = mockk<LowestPriceCodySelectCache> {
+                every { get() } returns null
+                every { set(any()) } returns Unit
+            }
 
-            LowestPriceCodySelectController(useCase)
+            LowestPriceCodySelectController(
+                useCase = useCase,
+                cache = cache
+            )
                 .`when`(
                     get("/v1/product/codies/lowest-price")
                 )

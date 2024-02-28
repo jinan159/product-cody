@@ -1,5 +1,6 @@
 package com.musinsa.product.search.adapter.product.`in`.web
 
+import com.musinsa.product.search.adapter.product.out.cache.LowestPriceSingleBrandCodySelectCache
 import com.musinsa.product.search.application.product.port.`in`.LowestPriceSingleBrandCodySelectUseCase
 import com.musinsa.product.search.application.product.port.`in`.LowestPriceSingleBrandCodySelectUseCase.MinPrice
 import com.musinsa.product.search.testsupport.ControllerShouldSpec
@@ -32,8 +33,15 @@ class LowestPriceSingleBrandCodySelectControllerTest : ControllerShouldSpec(
                     )
                 )
             }
+            val cache = mockk<LowestPriceSingleBrandCodySelectCache> {
+                every { get() } returns null
+                every { set(any()) } returns Unit
+            }
 
-            LowestPriceSingleBrandCodySelectController(useCase)
+            LowestPriceSingleBrandCodySelectController(
+                useCase = useCase,
+                cache = cache
+            )
                 .`when`(
                     get("/v1/product/codies/lowest-price/single-brand")
                 )

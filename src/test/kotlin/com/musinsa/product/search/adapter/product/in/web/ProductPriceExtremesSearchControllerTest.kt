@@ -1,5 +1,6 @@
 package com.musinsa.product.search.adapter.product.`in`.web
 
+import com.musinsa.product.search.adapter.product.out.cache.ProductPriceExtremesSearchCache
 import com.musinsa.product.search.application.product.port.`in`.ProductPriceExtremesSearchUseCase
 import com.musinsa.product.search.application.product.port.`in`.ProductPriceExtremesSearchUseCase.BrandAndPrice
 import com.musinsa.product.search.application.product.port.`in`.ProductPriceExtremesSearchUseCase.Response
@@ -32,8 +33,15 @@ class ProductPriceExtremesSearchControllerTest : ControllerShouldSpec(
                     )
                 )
             }
+            val cache = mockk<ProductPriceExtremesSearchCache> {
+                every { getWith(any()) } returns null
+                every { setWith(any(), any()) } returns Unit
+            }
 
-            ProductPriceExtremesSearchController(useCase)
+            ProductPriceExtremesSearchController(
+                useCase = useCase,
+                cache = cache
+            )
                 .`when`(
                     get(
                         "/v1/product/products/categories/{categoryName}/price-extremes",
