@@ -25,5 +25,4 @@ class LowestPriceCodySelectService(
             totalPrice = result.items.sumOf { it.amount }
         )
     }
-
 }

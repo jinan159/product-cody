@@ -1,9 +1,7 @@
 package com.musinsa.product.search.adapter.admin.out.persistence.repository
 
-import com.musinsa.product.search.adapter.admin.out.persistence.entity.BrandEntity
 import com.musinsa.product.search.adapter.admin.out.persistence.entity.ProductEntity
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
-import com.musinsa.product.search.domain.Brand
 import com.musinsa.product.search.domain.Product
 import com.musinsa.product.search.domain.ProductPrice
 import org.springframework.stereotype.Repository

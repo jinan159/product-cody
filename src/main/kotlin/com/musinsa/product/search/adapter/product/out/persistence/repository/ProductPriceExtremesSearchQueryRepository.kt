@@ -8,9 +8,7 @@ import com.musinsa.product.search.application.product.port.out.ProductPriceExtre
 import com.musinsa.product.search.application.product.port.out.ProductPriceExtremesSearchRepository.Item
 import com.musinsa.product.search.application.product.port.out.ProductPriceExtremesSearchRepository.SearchResult
 import org.jetbrains.exposed.sql.JoinType
-import org.jetbrains.exposed.sql.LongColumnType
 import org.jetbrains.exposed.sql.alias
-import org.jetbrains.exposed.sql.castTo
 import org.jetbrains.exposed.sql.max
 import org.jetbrains.exposed.sql.min
 import org.jetbrains.exposed.sql.select

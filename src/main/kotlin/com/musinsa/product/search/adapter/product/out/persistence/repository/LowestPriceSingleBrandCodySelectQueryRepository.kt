@@ -7,7 +7,6 @@ import com.musinsa.product.search.application.product.port.out.LowestPriceSingle
 import com.musinsa.product.search.application.product.port.out.LowestPriceSingleBrandCodySelectRepository.CategoryAndPrice
 import com.musinsa.product.search.application.product.port.out.LowestPriceSingleBrandCodySelectRepository.SelectResult
 import org.jetbrains.exposed.sql.JoinType
-import org.jetbrains.exposed.sql.SortOrder.DESC
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.castTo
 import org.jetbrains.exposed.sql.min

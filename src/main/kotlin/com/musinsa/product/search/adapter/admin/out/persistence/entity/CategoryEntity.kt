@@ -1,6 +1,5 @@
 package com.musinsa.product.search.adapter.admin.out.persistence.entity
 
-import com.musinsa.product.search.adapter.out.persistence.table.Brands
 import com.musinsa.product.search.adapter.out.persistence.table.Categories
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
