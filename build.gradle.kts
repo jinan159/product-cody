@@ -37,6 +37,9 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testRuntimeOnly("com.h2database:h2")
 
+    // redis
+    implementation("org.redisson:redisson-spring-boot-starter:3.27.1")
+
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 

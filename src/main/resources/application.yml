@@ -8,3 +8,7 @@ spring:
       enabled: true
   exposed:
     show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
