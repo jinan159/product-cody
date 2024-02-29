@@ -89,6 +89,16 @@ openapi3 {
     setServer("http://localhost:8080")
 }
 
+tasks.register<Copy>("copyOasToSwagger") {
+    val targetFile = layout.buildDirectory.file("api-spec/openapi3.yaml").get()
+
+    delete("src/main/resources/static/swagger-ui/openapi3.yaml")
+    from("$targetFile")
+    into("src/main/resources/static/swagger-ui/.")
+
+    dependsOn("openapi3")
+}
+
 application {
     mainClass.set("com.musinsa.product.search.ApplicationKt")
 }
