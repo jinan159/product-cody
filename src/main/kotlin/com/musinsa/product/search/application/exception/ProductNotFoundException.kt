@@ -1,3 +1,5 @@
 package com.musinsa.product.search.application.exception
 
-class ProductNotFoundException : RuntimeException("존재하지 않는 상품 입니다")
+import com.musinsa.product.search.application.exception.ErrorCode.PRODUCT_NOT_FOUND
+
+class ProductNotFoundException : NotFoundException(PRODUCT_NOT_FOUND)

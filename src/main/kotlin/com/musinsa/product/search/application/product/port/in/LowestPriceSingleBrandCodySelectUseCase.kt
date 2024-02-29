@@ -1,5 +1,7 @@
 package com.musinsa.product.search.application.product.port.`in`
 
+import com.musinsa.product.search.application.exception.ErrorCode.LOWEST_PRICE_SINGLE_BRAND_NOT_FOUND
+import com.musinsa.product.search.application.exception.NotFoundException
 import java.math.BigDecimal
 
 interface LowestPriceSingleBrandCodySelectUseCase {
@@ -20,7 +22,7 @@ interface LowestPriceSingleBrandCodySelectUseCase {
         )
     }
 
-    class LowestPriceSingleBrandCodyNotFoundException : RuntimeException(
-        "최저 가격인 단일 브랜드 코디를 찾을 수 없습니다"
+    class LowestPriceSingleBrandCodyNotFoundException : NotFoundException(
+        LOWEST_PRICE_SINGLE_BRAND_NOT_FOUND
     )
 }

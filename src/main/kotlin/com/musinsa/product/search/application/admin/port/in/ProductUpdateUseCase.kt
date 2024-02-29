@@ -1,5 +1,7 @@
 package com.musinsa.product.search.application.admin.port.`in`
 
+import com.musinsa.product.search.application.exception.ApplicationException
+import com.musinsa.product.search.application.exception.ErrorCode.PRODUCT_UPDATE_FAILED
 import java.math.BigDecimal
 
 interface ProductUpdateUseCase {
@@ -15,8 +17,8 @@ interface ProductUpdateUseCase {
 
     class ProductUpdateFailedException(
         override val cause: Throwable?
-    ) : RuntimeException(
-        "상품 수정에 실패했습니다",
-        cause
+    ) : ApplicationException(
+        errorCode = PRODUCT_UPDATE_FAILED,
+        cause = cause
     )
 }

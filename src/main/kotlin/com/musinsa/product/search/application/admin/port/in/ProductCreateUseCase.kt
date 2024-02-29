@@ -1,5 +1,7 @@
 package com.musinsa.product.search.application.admin.port.`in`
 
+import com.musinsa.product.search.application.exception.ApplicationException
+import com.musinsa.product.search.application.exception.ErrorCode.PRODUCT_CREATE_FAILED
 import java.math.BigDecimal
 
 interface ProductCreateUseCase {
@@ -18,8 +20,8 @@ interface ProductCreateUseCase {
 
     class ProductCreateFailedException(
         override val cause: Throwable?
-    ) : RuntimeException(
-        "상품 생성에 실패했습니다",
-        cause
+    ) : ApplicationException(
+        errorCode = PRODUCT_CREATE_FAILED,
+        cause = cause
     )
 }

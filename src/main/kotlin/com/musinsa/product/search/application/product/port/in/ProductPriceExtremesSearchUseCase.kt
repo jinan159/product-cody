@@ -1,5 +1,7 @@
 package com.musinsa.product.search.application.product.port.`in`
 
+import com.musinsa.product.search.application.exception.ErrorCode
+import com.musinsa.product.search.application.exception.NotFoundException
 import java.math.BigDecimal
 
 interface ProductPriceExtremesSearchUseCase {
@@ -16,7 +18,7 @@ interface ProductPriceExtremesSearchUseCase {
         val price: BigDecimal
     )
 
-    class ProductPriceExtremesNotFoundException : RuntimeException(
-        "최저, 최고 가격 상품을 찾을 수 없습니다"
+    class ProductPriceExtremesNotFoundException : NotFoundException(
+        ErrorCode.PRODUCT_PRICE_EXTREMES_NOT_FOUND
     )
 }
