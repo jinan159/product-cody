@@ -4,6 +4,7 @@ import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCa
 import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase.UpdateRequest
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductChangedEventPublisher
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.application.exception.BrandNotFoundException
 import com.musinsa.product.search.application.exception.CategoryNotFoundException
@@ -18,6 +19,8 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
@@ -27,10 +30,14 @@ class ProductUpdateServiceTest(
 ) : ServiceShouldSpec({
     val brandRepository = mockk<BrandRepository>()
     val categoryRepository = mockk<CategoryRepository>()
+    val eventPublisher = spyk<ProductChangedEventPublisher> {
+        every { publish(any()) } returns Unit
+    }
     val service = ProductUpdateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
-        productRepository = productRepository
+        productRepository = productRepository,
+        productChangedEventPublisher = eventPublisher
     )
 
     val product = Product(
@@ -57,7 +64,8 @@ class ProductUpdateServiceTest(
     beforeTest {
         clearMocks(
             brandRepository,
-            categoryRepository
+            categoryRepository,
+            eventPublisher
         )
     }
 
@@ -81,6 +89,10 @@ class ProductUpdateServiceTest(
             productAfterUpdate.name shouldBe name
             productAfterUpdate.price.amount.compareTo(amount) shouldBe 0
         }
+
+        verify(exactly = 1) {
+            eventPublisher.publish(any())
+        }
     }
 
     context("상품을 수정할 때") {
@@ -97,6 +109,10 @@ class ProductUpdateServiceTest(
 
             // then
             exception.shouldBeTypeOf<BrandNotFoundException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
 
         should("카테고리가 존재하지 않으면 예외가 발생한다") {
@@ -112,6 +128,10 @@ class ProductUpdateServiceTest(
 
             // then
             exception.shouldBeTypeOf<CategoryNotFoundException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
 
         should("존재하지 않는 상품이면 예외가 발생한다") {
@@ -127,6 +147,10 @@ class ProductUpdateServiceTest(
 
             // then
             exception.shouldBeTypeOf<ProductNotFoundException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
 
         should("상품 수정에 싪패하면 예외가 발생한다") {
@@ -145,6 +169,10 @@ class ProductUpdateServiceTest(
 
             // then
             exception.shouldBeTypeOf<ProductUpdateFailedException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
     }
 })

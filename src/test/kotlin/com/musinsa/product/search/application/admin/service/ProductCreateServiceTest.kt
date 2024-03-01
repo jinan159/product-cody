@@ -4,6 +4,7 @@ import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCa
 import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.ProductCreateFailedException
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductChangedEventPublisher
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.application.exception.BrandNotFoundException
 import com.musinsa.product.search.application.exception.CategoryNotFoundException
@@ -15,6 +16,8 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
@@ -23,10 +26,14 @@ class ProductCreateServiceTest(
 ) : ServiceShouldSpec({
     val brandRepository = mockk<BrandRepository>()
     val categoryRepository = mockk<CategoryRepository>()
+    val eventPublisher = spyk<ProductChangedEventPublisher> {
+        every { publish(any()) } returns Unit
+    }
     val service = ProductCreateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
-        productRepository = productRepository
+        productRepository = productRepository,
+        productChangedEventPublisher = eventPublisher
     )
 
     val createRequest = CreateRequest(
@@ -39,7 +46,8 @@ class ProductCreateServiceTest(
     beforeTest {
         clearMocks(
             brandRepository,
-            categoryRepository
+            categoryRepository,
+            eventPublisher
         )
     }
 
@@ -61,6 +69,10 @@ class ProductCreateServiceTest(
             product.name shouldBe name
             product.price.amount.compareTo(amount) shouldBe 0
         }
+
+        verify(exactly = 1) {
+            eventPublisher.publish(any())
+        }
     }
 
     context("상품을 생성할 때") {
@@ -73,7 +85,12 @@ class ProductCreateServiceTest(
                 service.create(createRequest)
             }
 
+            // then
             exception.shouldBeTypeOf<BrandNotFoundException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
 
         should("카테고리 존재하지 않으면 예외가 발생한다") {
@@ -86,7 +103,12 @@ class ProductCreateServiceTest(
                 service.create(createRequest)
             }
 
+            // then
             exception.shouldBeTypeOf<CategoryNotFoundException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
 
         should("상품 도메인 생성을 실패하면 예외가 발생한다") {
@@ -102,7 +124,12 @@ class ProductCreateServiceTest(
                 service.create(invalidCreateRequest)
             }
 
+            // then
             exception.shouldBeTypeOf<ProductCreateFailedException>()
+
+            verify(exactly = 0) {
+                eventPublisher.publish(any())
+            }
         }
     }
 })

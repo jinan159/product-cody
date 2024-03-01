@@ -1,4 +1,4 @@
-package com.musinsa.product.search.adapter.config
+package com.musinsa.product.search.adapter.common.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry

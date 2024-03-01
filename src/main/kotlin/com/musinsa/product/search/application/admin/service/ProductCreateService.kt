@@ -6,6 +6,8 @@ import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCa
 import com.musinsa.product.search.application.admin.port.`in`.ProductCreateUseCase.Response
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductChangedEventPublisher
+import com.musinsa.product.search.application.admin.port.out.ProductChangedEventPublisher.EventPayload
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.application.exception.BrandNotFoundException
 import com.musinsa.product.search.application.exception.CategoryNotFoundException
@@ -19,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional
 class ProductCreateService(
     private val brandRepository: BrandRepository,
     private val categoryRepository: CategoryRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val productChangedEventPublisher: ProductChangedEventPublisher
 ) : ProductCreateUseCase {
     override fun create(request: CreateRequest): Response {
         request.validate()
@@ -41,8 +44,12 @@ class ProductCreateService(
 
         val savedProduct = productRepository.save(product)
 
+        productChangedEventPublisher.publish(
+            EventPayload(savedProduct.id!!)
+        )
+
         return Response(
-            savedProduct.id!!
+            savedProduct.id
         )
     }
 

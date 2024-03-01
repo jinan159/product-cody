@@ -1,4 +1,4 @@
-package com.musinsa.product.search.adapter.exception
+package com.musinsa.product.search.adapter.common.exception
 
 import com.musinsa.product.search.application.exception.ApplicationException
 import com.musinsa.product.search.application.exception.ErrorCode

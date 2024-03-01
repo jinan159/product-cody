@@ -5,6 +5,7 @@ import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCa
 import com.musinsa.product.search.application.admin.port.`in`.ProductUpdateUseCase.UpdateRequest
 import com.musinsa.product.search.application.admin.port.out.BrandRepository
 import com.musinsa.product.search.application.admin.port.out.CategoryRepository
+import com.musinsa.product.search.application.admin.port.out.ProductChangedEventPublisher
 import com.musinsa.product.search.application.admin.port.out.ProductRepository
 import com.musinsa.product.search.application.exception.BrandNotFoundException
 import com.musinsa.product.search.application.exception.CategoryNotFoundException
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 class ProductUpdateService(
     private val brandRepository: BrandRepository,
     private val categoryRepository: CategoryRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val productChangedEventPublisher: ProductChangedEventPublisher
 ) : ProductUpdateUseCase {
     override fun update(request: UpdateRequest) {
         request.validate()
@@ -39,6 +41,10 @@ class ProductUpdateService(
         }
 
         productRepository.save(product)
+
+        productChangedEventPublisher.publish(
+            ProductChangedEventPublisher.EventPayload(product.id!!)
+        )
     }
 
     private fun UpdateRequest.validate() {
