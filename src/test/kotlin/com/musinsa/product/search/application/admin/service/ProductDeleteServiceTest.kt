@@ -11,7 +11,7 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
-import io.mockk.spyk
+import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional
 class ProductDeleteServiceTest(
     private val productRepository: ProductRepository
 ) : ServiceShouldSpec({
-    val eventPublisher = spyk<ProductChangedEventPublisher> {
-        every { publish(any()) } returns Unit
-    }
+    val eventPublisher = mockk<ProductChangedEventPublisher>()
     val service = ProductDeleteService(
         productRepository = productRepository,
         productChangedEventPublisher = eventPublisher
@@ -33,6 +31,8 @@ class ProductDeleteServiceTest(
 
     should("상품 삭제를 성공한다") {
         // given
+        every { eventPublisher.publish(any()) } returns Unit
+
         val savedProduct = productRepository.save(
             Product(
                 brandId = 0L,

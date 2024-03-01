@@ -8,6 +8,7 @@ import com.musinsa.product.search.testsupport.ControllerShouldSpec
 import com.musinsa.product.search.testsupport.ControllerShouldSpec.FieldBuilder.Companion.responseFields
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -15,23 +16,26 @@ class ProductPriceExtremesSearchControllerTest : ControllerShouldSpec(
     service = "상품 검색",
     tag = "상품",
     body = {
+        val categoryName = "test-category-name"
+        val response = Response(
+            categoryName = "test-category-name",
+            minPrices = listOf(
+                BrandAndPrice(
+                    brandName = "test-brand-1-name",
+                    price = 1000.toBigDecimal()
+                )
+            ),
+            maxPrices = listOf(
+                BrandAndPrice(
+                    brandName = "test-brand-2-name",
+                    price = 2000.toBigDecimal()
+                )
+            )
+        )
+
         should("카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격 조회에 성공한다") {
             val useCase = mockk<ProductPriceExtremesSearchUseCase> {
-                every { search(any()) } returns Response(
-                    categoryName = "test-category-name",
-                    minPrices = listOf(
-                        BrandAndPrice(
-                            brandName = "test-brand-1-name",
-                            price = 1000.toBigDecimal()
-                        )
-                    ),
-                    maxPrices = listOf(
-                        BrandAndPrice(
-                            brandName = "test-brand-2-name",
-                            price = 2000.toBigDecimal()
-                        )
-                    )
-                )
+                every { search(any()) } returns response
             }
             val cache = mockk<ProductPriceExtremesSearchCache> {
                 every { getWith(any()) } returns null
@@ -45,7 +49,7 @@ class ProductPriceExtremesSearchControllerTest : ControllerShouldSpec(
                 .`when`(
                     get(
                         "/v1/product/products/categories/{categoryName}/price-extremes",
-                        "test-category-name"
+                        categoryName
                     )
                 )
                 .then(status().isOk)
@@ -62,6 +66,41 @@ class ProductPriceExtremesSearchControllerTest : ControllerShouldSpec(
                         }
                     }
                 )
+
+            verify(exactly = 1) {
+                cache.getWith(categoryName)
+            }
+            verify(exactly = 1) {
+                useCase.search(categoryName)
+            }
+        }
+
+        should("캐시가 있는 경우에는 캐시에서 응답한다") {
+            val useCase = mockk<ProductPriceExtremesSearchUseCase> {
+                every { search(any()) } returns response
+            }
+            val cache = mockk<ProductPriceExtremesSearchCache> {
+                every { getWith(any()) } returns response
+            }
+
+            ProductPriceExtremesSearchController(
+                useCase = useCase,
+                cache = cache
+            )
+                .`when`(
+                    get(
+                        "/v1/product/products/categories/{categoryName}/price-extremes",
+                        categoryName
+                    )
+                )
+                .then(status().isOk)
+
+            verify(exactly = 1) {
+                cache.getWith(categoryName)
+            }
+            verify(exactly = 0) {
+                useCase.search(categoryName)
+            }
         }
     }
 )

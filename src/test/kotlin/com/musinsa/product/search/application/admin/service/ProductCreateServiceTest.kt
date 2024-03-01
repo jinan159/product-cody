@@ -16,7 +16,6 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import org.springframework.transaction.annotation.Transactional
 
@@ -26,9 +25,7 @@ class ProductCreateServiceTest(
 ) : ServiceShouldSpec({
     val brandRepository = mockk<BrandRepository>()
     val categoryRepository = mockk<CategoryRepository>()
-    val eventPublisher = spyk<ProductChangedEventPublisher> {
-        every { publish(any()) } returns Unit
-    }
+    val eventPublisher = mockk<ProductChangedEventPublisher>()
     val service = ProductCreateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
@@ -55,6 +52,7 @@ class ProductCreateServiceTest(
         // given
         every { brandRepository.existsById(any()) } returns true
         every { categoryRepository.existsById(any()) } returns true
+        every { eventPublisher.publish(any()) } returns Unit
 
         // when
         val response = service.create(createRequest)

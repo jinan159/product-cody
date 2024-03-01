@@ -19,7 +19,6 @@ import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -30,9 +29,7 @@ class ProductUpdateServiceTest(
 ) : ServiceShouldSpec({
     val brandRepository = mockk<BrandRepository>()
     val categoryRepository = mockk<CategoryRepository>()
-    val eventPublisher = spyk<ProductChangedEventPublisher> {
-        every { publish(any()) } returns Unit
-    }
+    val eventPublisher = mockk<ProductChangedEventPublisher>()
     val service = ProductUpdateService(
         brandRepository = brandRepository,
         categoryRepository = categoryRepository,
@@ -73,6 +70,8 @@ class ProductUpdateServiceTest(
         // given
         every { brandRepository.existsById(any()) } returns true
         every { categoryRepository.existsById(any()) } returns true
+        every { eventPublisher.publish(any()) } returns Unit
+
         val savedProduct = productRepository.save(product)
         val updateRequest = createUpdateRequest(id = savedProduct.id!!)
 
