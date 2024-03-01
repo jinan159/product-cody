@@ -10,7 +10,7 @@ plugins {
     application
 }
 
-group = "com.musinsa.product.search"
+group = "com.musinsa.product.cody"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -82,14 +82,14 @@ tasks.jar {
 }
 
 openapi3 {
-    title = "Musinsa product search API"
-    description = "Musinsa product search API"
+    title = "Musinsa product cody API"
+    description = "Musinsa product cody API"
     version = "${project.version}"
     format = "yaml"
     setServer("http://localhost:8080")
 }
 
-tasks.register<Copy>("copyOasToSwagger") {
+tasks.register<Copy>("copyApiDoc") {
     val targetFile = layout.buildDirectory.file("api-spec/openapi3.yaml").get()
 
     delete("src/main/resources/static/swagger-ui/openapi3.yaml")
@@ -100,5 +100,5 @@ tasks.register<Copy>("copyOasToSwagger") {
 }
 
 application {
-    mainClass.set("com.musinsa.product.search.ApplicationKt")
+    mainClass.set("com.musinsa.product.cody.ApplicationKt")
 }

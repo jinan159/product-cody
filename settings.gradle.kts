@@ -1,4 +1,4 @@
-rootProject.name = "product-search"
+rootProject.name = "product-cody"
 
 pluginManagement {
     val kotlinVersion: String by settings
