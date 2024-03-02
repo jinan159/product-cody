@@ -7,6 +7,8 @@ import com.musinsa.product.cody.application.product.port.out.LowestPriceSingleBr
 import com.musinsa.product.cody.application.product.port.out.LowestPriceSingleBrandCodySelectRepository.CategoryAndPrice
 import com.musinsa.product.cody.application.product.port.out.LowestPriceSingleBrandCodySelectRepository.SelectResult
 import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.SortOrder.DESC
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.castTo
 import org.jetbrains.exposed.sql.min
@@ -90,7 +92,7 @@ class LowestPriceSingleBrandCodySelectQueryRepository : LowestPriceSingleBrandCo
         ) minPricePerBrandCategory
         INNER JOIN BRANDS ON minPricePerBrandCategory.brandId = BRANDS.ID
         GROUP BY minPricePerBrandCategory.brandId
-        ORDER BY sum_amount LIMIT 1
+        ORDER BY sum_amount ASC, minPricePerBrandCategory.brandId DESC LIMIT 1
          */
 
         val brandId = Products.brandId.alias("brandId")
@@ -131,7 +133,11 @@ class LowestPriceSingleBrandCodySelectQueryRepository : LowestPriceSingleBrandCo
                 minPricePerBrandCategory[brandId]
             )
             .orderBy(
-                brandPriceSum
+                column = brandPriceSum
+            )
+            .orderBy(
+                column = minPricePerBrandCategory[brandId],
+                order = DESC
             )
             .limit(1)
             .firstOrNull()

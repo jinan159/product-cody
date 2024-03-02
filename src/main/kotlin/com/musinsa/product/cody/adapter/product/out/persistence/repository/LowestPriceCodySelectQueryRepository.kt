@@ -38,6 +38,7 @@ class LowestPriceCodySelectQueryRepository : LowestPriceCodySelectRepository {
         ) minPricePerBrand
         INNER JOIN CATEGORIES ON minPricePerBrand.categoryId = CATEGORIES.ID
         INNER JOIN BRANDS ON minPricePerBrand.max_brandId = BRANDS.ID
+        ORDER BY CATEGORIES.ID ASC, minPricePerBrand.min_amount ASC
          */
 
         val minPricePerCategory_categoryId = Products.categoryId.alias("categoryId")
@@ -92,6 +93,8 @@ class LowestPriceCodySelectQueryRepository : LowestPriceCodySelectRepository {
                 minPricePerBrand[minPricePerBrand_min_amount]
             )
             .selectAll()
+            .orderBy(Categories.id)
+            .orderBy(minPricePerBrand[minPricePerBrand_min_amount])
             .toList()
 
         return SelectResult(

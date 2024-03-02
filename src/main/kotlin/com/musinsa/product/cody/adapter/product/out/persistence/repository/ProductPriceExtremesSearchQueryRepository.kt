@@ -70,6 +70,7 @@ class ProductPriceExtremesSearchQueryRepository : ProductPriceExtremesSearchRepo
             GROUP BY PRODUCTS.AMOUNT
         ) priceByBrand
         INNER JOIN BRANDS ON priceByBrand.max_brandId = BRANDS.ID
+        ORDER BY BRANDS.ID ASC
         LIMIT 1
          */
 
@@ -125,6 +126,7 @@ class ProductPriceExtremesSearchQueryRepository : ProductPriceExtremesSearchRepo
                 priceByBrand[priceByBrand_amount]
             )
             .selectAll()
+            .orderBy(Brands.id)
             .limit(1)
             .firstOrNull()
             ?.let {
