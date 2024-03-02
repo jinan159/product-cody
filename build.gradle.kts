@@ -39,6 +39,7 @@ dependencies {
 
     // redis
     implementation("org.redisson:redisson-spring-boot-starter:3.27.1")
+    implementation("org.testcontainers:testcontainers:1.19.6")
 
     // test
     testImplementation("org.jetbrains.kotlin:kotlin-test")
