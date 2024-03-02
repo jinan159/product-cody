@@ -3,6 +3,7 @@ package com.musinsa.product.cody.adapter.common.exception
 import com.musinsa.product.cody.application.exception.ApplicationException
 import com.musinsa.product.cody.application.exception.ErrorCode
 import com.musinsa.product.cody.application.exception.NotFoundException
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -12,20 +13,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(e: NotFoundException): ResponseEntity<ErrorResponse> {
+        logger.error(e.message, e)
+
         return ResponseEntity.status(NOT_FOUND)
             .body(e.errorCode.toResponse())
     }
 
     @ExceptionHandler(ApplicationException::class)
     fun handleApplicationException(e: ApplicationException): ResponseEntity<ErrorResponse> {
+        logger.error(e.message, e)
+
         return ResponseEntity.status(BAD_REQUEST)
             .body(e.errorCode.toResponse())
     }
 
     @ExceptionHandler(Exception::class)
     fun handleUncaughtException(e: Exception): ResponseEntity<ErrorResponse> {
+        logger.error(e.message, e)
+
         return ResponseEntity.status(INTERNAL_SERVER_ERROR)
             .body(
                 ErrorResponse(
