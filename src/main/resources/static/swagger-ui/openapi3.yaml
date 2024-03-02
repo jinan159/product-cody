@@ -1,0 +1,262 @@
+openapi: 3.0.1
+info:
+  title: Musinsa product cody API
+  description: Musinsa product cody API
+  version: 1.0-SNAPSHOT
+servers:
+- url: http://localhost:8080
+tags: []
+paths:
+  /v1/admin/brands:
+    post:
+      tags:
+      - "[상품 검색 어드민] 브랜드"
+      operationId: "[상품 검색 어드민] 브랜드 브랜드 생성에 성공한다"
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/v1-admin-brands-899681600'
+            examples:
+              '[상품 검색 어드민] 브랜드 브랜드 생성에 성공한다':
+                value: "{\"name\":\"test-brand-name\"}"
+      responses:
+        "200":
+          description: "200"
+  /v1/admin/categories:
+    post:
+      tags:
+      - "[상품 검색 어드민] 카테고리"
+      operationId: "[상품 검색 어드민] 카테고리 카테고리 생성에 성공한다"
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/v1-admin-categories-1442992520'
+            examples:
+              '[상품 검색 어드민] 카테고리 카테고리 생성에 성공한다':
+                value: "{\"name\":\"test-category-name\"}"
+      responses:
+        "200":
+          description: "200"
+  /v1/admin/products:
+    post:
+      tags:
+      - "[상품 검색 어드민] 상품"
+      operationId: "[상품 검색 어드민] 상품 상품 생성에 성공한다"
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/v1-admin-products-1100722884'
+            examples:
+              '[상품 검색 어드민] 상품 상품 생성에 성공한다':
+                value: "{\"brandId\":1,\"categoryId\":2,\"name\":\"test-product-name\"\
+                  ,\"amount\":1000}"
+      responses:
+        "200":
+          description: "200"
+  /v1/admin/products/{id}:
+    put:
+      tags:
+      - "[상품 검색 어드민] 상품"
+      operationId: "[상품 검색 어드민] 상품 상품 수정에 성공한다"
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/v1-admin-products-1100722884'
+            examples:
+              '[상품 검색 어드민] 상품 상품 수정에 성공한다':
+                value: "{\"brandId\":1,\"categoryId\":2,\"name\":\"test-product-updated-name\"\
+                  ,\"amount\":2000}"
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - "[상품 검색 어드민] 상품"
+      operationId: "[상품 검색 어드민] 상품 상품 삭제에 성공한다"
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+  /v1/product/codies/lowest-price:
+    get:
+      tags:
+      - "[상품 검색] 상품"
+      operationId: "[상품 검색] 상품 카테고리별 최저가격 브랜드과 상품가격, 총액 조회에 성공한다"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-product-codies-lowest-price820977204'
+              examples:
+                '[상품 검색] 상품 카테고리별 최저가격 브랜드과 상품가격, 총액 조회에 성공한다':
+                  value: "{\"products\":[{\"categoryName\":\"test-category-1-name\"\
+                    ,\"brandName\":\"test-brand-1-name\",\"price\":1000},{\"categoryName\"\
+                    :\"test-category-2-name\",\"brandName\":\"test-brand-2-name\"\
+                    ,\"price\":2000}],\"totalPrice\":3000}"
+  /v1/product/codies/lowest-price/single-brand:
+    get:
+      tags:
+      - "[상품 검색] 상품"
+      operationId: "[상품 검색] 상품 단일 브랜드로 모든 카테고리 상품을 구매할 때 최저가격에 판매하는 브랜드와 카테고리의 상품가\
+        격, 총액 조회에 성공한다"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-product-codies-lowest-price-single-brand-34384269'
+              examples:
+                '[상품 검색] 상품 단일 브랜드로 모든 카테고리 상품을 구매할 때 최저가격에 판매하는 브랜드와 카테고리의 상품가격, 총액 조회에 성공한다':
+                  value: "{\"minPrice\":{\"brandName\":\"test-brand-name\",\"categories\"\
+                    :[{\"categoryName\":\"test-category-1-name\",\"price\":1000},{\"\
+                    categoryName\":\"test-category-2-name\",\"price\":2000}],\"totalPrice\"\
+                    :3000}}"
+  /v1/product/products/categories/{categoryName}/price-extremes:
+    get:
+      tags:
+      - "[상품 검색] 상품"
+      operationId: "[상품 검색] 상품 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격 조회에 성공한다"
+      parameters:
+      - name: categoryName
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1-product-products-categories-categoryName-price-extremes2120170301'
+              examples:
+                '[상품 검색] 상품 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격 조회에 성공한다':
+                  value: "{\"categoryName\":\"test-category-name\",\"minPrices\":[{\"\
+                    brandName\":\"test-brand-1-name\",\"price\":1000}],\"maxPrices\"\
+                    :[{\"brandName\":\"test-brand-2-name\",\"price\":2000}]}"
+components:
+  schemas:
+    v1-product-codies-lowest-price-single-brand-34384269:
+      type: object
+      properties:
+        minPrice:
+          type: object
+          properties:
+            brandName:
+              type: string
+              description: 브랜드
+            totalPrice:
+              type: number
+              description: 총액
+            categories:
+              type: array
+              description: 카테고리 목록
+              items:
+                type: object
+                properties:
+                  price:
+                    type: number
+                    description: 가격
+                  categoryName:
+                    type: string
+                    description: 카테고리
+          description: 최저가
+    v1-product-products-categories-categoryName-price-extremes2120170301:
+      type: object
+      properties:
+        maxPrices:
+          type: array
+          description: 최고가
+          items:
+            type: object
+            properties:
+              brandName:
+                type: string
+                description: 브랜드
+              price:
+                type: number
+                description: 가격
+        minPrices:
+          type: array
+          description: 최저가
+          items:
+            type: object
+            properties:
+              brandName:
+                type: string
+                description: 브랜드
+              price:
+                type: number
+                description: 가격
+        categoryName:
+          type: string
+          description: 카테고리
+    v1-admin-categories-1442992520:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 카테고리명
+    v1-admin-products-1100722884:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: 가격
+        brandId:
+          type: number
+          description: 브랜드 ID
+        name:
+          type: string
+          description: 상품명
+        categoryId:
+          type: number
+          description: 카테고리 ID
+    v1-product-codies-lowest-price820977204:
+      type: object
+      properties:
+        totalPrice:
+          type: number
+          description: 총액
+        products:
+          type: array
+          description: 상품 목록
+          items:
+            type: object
+            properties:
+              brandName:
+                type: string
+                description: 브랜드
+              price:
+                type: number
+                description: 가격
+              categoryName:
+                type: string
+                description: 카테고리
+    v1-admin-brands-899681600:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 브랜드명
